@@ -11,5 +11,39 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
-var wishes = db.collection('Wishes');
-console.log(wishes);
+var wishdb = db.collection('Wishes');
+var wishbtn = $('#submit');
+wishbtn.click(addWish);
+var wishcontainer = $('#wishcontainer')[0]
+console.log(wishcontainer)
+
+function addWish() {
+  let name = $('#name').val();
+  let wish = $('#wish').val();
+  let wishdata = {
+    sender: name,
+    wish: wish
+  }
+  wishdb.add(wishdata).then(docRef => {
+    wishdb.doc(docRef.id).update({
+      docid: docRef.id,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      console.log('saved to fb')
+    });
+  }).catch(error => console.log('an error occured', error));
+}
+
+function showWishes() {
+  wishdb.orderBy('timestamp', 'desc').get().then((querySnapshot) => {
+    while(wishcontainer.firstChild) wishcontainer.removeChild(wishcontainer.firstChild);
+    querySnapshot.forEach((doc) => {
+      // console.log(`${doc.id} => ${doc.data()}`);
+      let json = doc.data();
+      let wishhtml = `
+      <p>${json.wish} <br> <span>${json.sender}</span></p>
+      `
+      wishcontainer.innerHTML += wishhtml;
+    })
+  }).then(() => console.log('success')).catch(error => console.error(error))
+}
