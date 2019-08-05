@@ -10,3 +10,6 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
+var wishes = db.collection('Wishes');
+console.log(wishes);
