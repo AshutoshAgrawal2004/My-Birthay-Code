@@ -29,7 +29,8 @@ function addWish() {
       docid: docRef.id,
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
-      console.log('saved to fb')
+      console.log('saved to fb');
+      showWishes();
     });
   }).catch(error => console.log('an error occured', error));
 }
@@ -41,7 +42,7 @@ function showWishes() {
       // console.log(`${doc.id} => ${doc.data()}`);
       let json = doc.data();
       let wishhtml = `
-      <p>${json.wish} <br> <span>${json.sender}</span></p>
+      <p class="onewish">${json.wish} <br> <span class="sender">${json.sender}</span></p>
       `
       wishcontainer.innerHTML += wishhtml;
     })
