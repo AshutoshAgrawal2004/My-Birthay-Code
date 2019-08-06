@@ -12,34 +12,39 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-firestore.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Lobster+Two&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <title>My Birthday Celebration</title>
 </head>
 
-<body onload="showWishes()">
+<body>
   <div class="container">
-    <div class="jumbotron">
-      <h1>Happy Birthday To Me!</h1>
-      <h1>8th August</h1>
+    <div class="jumbotron jumbotron-fluid">
+      <h3>Happy Birthday To Me!</h3>
+      <h4 class="display-4">8th August</h4>
+      <h4 class="display-4">I turned 15</h4>
     </div>
-    <form class="form" action="index.html" method="post">
+    <button class="btn" id="togglewisher" data-toggle="collapse" data-target="#wisher" aria-expanded="false" aria-controls="wisher">Wanna Wish Me!</button>
+    <form class="form collapse" id="wisher" action="index.html" method="post">
       <div class="row">
-        <input type="text" class="col-5" placeholder="Enter your name" id="name">
-      </div> <br>
+        <input type="text" class="form-text col-11" max="20" placeholder="Enter your name" id="name">
+      </div>
       <div class="row">
-        <textarea type="text" class="col-10" name="" placeholder="Wish: Happy Birthday Bro!" id="wish"></textarea>
-      </div> <br>
+        <textarea type="text" class="form-text col-11" name="" placeholder="Wish: Happy Birthday Bro!" id="wish"></textarea>
+      </div>
       <button type="button" id="submit" name="button">Wish</button>
+      <p id="feedback"></p>
     </form>
 
     <div class="wishes">
-      <h1>Thanks for all these Wishes</h1>
+      <h1 id="thanks">Thanks for all these Wishes</h1>
       <div id="wishcontainer">
 
       </div>
     </div>
   </div>
+  <div id="snackbar">Snackbar</div>
+  <footer class="love">Made with &hearts; by <a href="https://www.sololearn.com/Profile/10779261">Ashutosh Agrawal</a></footer>
   <script src="script.js" charset="utf-8"></script>
 
 </body>

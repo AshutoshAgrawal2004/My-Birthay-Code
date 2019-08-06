@@ -11,13 +11,18 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
+var wishbtn, wishcontainer, snackbar;
 var wishdb = db.collection('Wishes');
-var wishbtn = $('#submit');
-wishbtn.click(addWish);
-var wishcontainer = $('#wishcontainer')[0]
-console.log(wishcontainer)
+$(document).ready(() => {
+  wishbtn = $('#submit');
+  wishcontainer = $('#wishcontainer')[0];
+  snackbar = $('#snackbar')[0];
+  wishbtn.click(addWish);
+  showWishes();
+})
 
 function addWish() {
+  makesnack('Wishing');
   let name = $('#name').val();
   let wish = $('#wish').val();
   let wishdata = {
@@ -29,22 +34,33 @@ function addWish() {
       docid: docRef.id,
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
-      console.log('saved to fb');
+      let feedback = $('#feedback');
+      feedback[0].textContent = `Thank you so much, ${name}`
+      feedback.css('visibility', 'visible');
       showWishes();
     });
   }).catch(error => console.log('an error occured', error));
 }
 
 function showWishes() {
+  makesnack('Wishes are Loading');
   wishdb.orderBy('timestamp', 'desc').get().then((querySnapshot) => {
     while(wishcontainer.firstChild) wishcontainer.removeChild(wishcontainer.firstChild);
     querySnapshot.forEach((doc) => {
       // console.log(`${doc.id} => ${doc.data()}`);
       let json = doc.data();
       let wishhtml = `
-      <p class="onewish">${json.wish} <br> <span class="sender">${json.sender}</span></p>
+      <div class="onewish">${json.wish} <br> <p class="sender">-- ${json.sender}</p></div>
       `
       wishcontainer.innerHTML += wishhtml;
     })
-  }).then(() => console.log('success')).catch(error => console.error(error))
+  }).then(() => makesnack("Thanks for all these Wishes")).catch(error => console.error(error))
+}
+
+function makesnack(msg) {
+  snackbar.innerHTML = msg;
+  snackbar.className = 'show';
+  setTimeout(function() {
+    snackbar.className = snackbar.className.replace('show', '');
+  }, 3000);
 }
