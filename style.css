@@ -142,3 +142,9 @@ a {
   font-family: 'Great Vibes', cursive;
   visibility: hidden;
 }
+
+#wishcount {
+  font-family: "Lobster Two", cursive;
+  margin-bottom: 30px;
+  visibility: hidden;
+}

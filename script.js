@@ -11,12 +11,13 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
-var wishbtn, wishcontainer, snackbar;
+var wishbtn, wishcontainer, snackbar, wishcountdis;
 var wishdb = db.collection('Wishes');
 $(document).ready(() => {
   wishbtn = $('#submit');
   wishcontainer = $('#wishcontainer')[0];
   snackbar = $('#snackbar')[0];
+  wishcountdis = $('#wishcount');
   wishbtn.click(addWish);
   showWishes();
 })
@@ -46,6 +47,9 @@ function showWishes() {
   makesnack('Wishes are Loading');
   wishdb.orderBy('timestamp', 'desc').get().then((querySnapshot) => {
     while(wishcontainer.firstChild) wishcontainer.removeChild(wishcontainer.firstChild);
+    let wishcount = querySnapshot.docs.length;
+    wishcountdis[0].innerHTML = `${wishcount} wishes and still counting!`
+    wishcountdis.css('visibility', 'visible');
     querySnapshot.forEach((doc) => {
       // console.log(`${doc.id} => ${doc.data()}`);
       let json = doc.data();
