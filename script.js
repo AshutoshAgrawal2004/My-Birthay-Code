@@ -30,17 +30,21 @@ function addWish() {
     sender: name,
     wish: wish
   }
-  wishdb.add(wishdata).then(docRef => {
-    wishdb.doc(docRef.id).update({
-      docid: docRef.id,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      let feedback = $('#feedback');
-      feedback[0].textContent = `Thank you so much, ${name}`
-      feedback.css('visibility', 'visible');
-      showWishes();
-    });
-  }).catch(error => console.log('an error occured', error));
+  if(checkBadwords(name) && checkBadwords(wish)) {
+    wishdb.add(wishdata).then(docRef => {
+      wishdb.doc(docRef.id).update({
+        docid: docRef.id,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        let feedback = $('#feedback');
+        feedback[0].textContent = `Thank you so much, ${name}`
+        feedback.css('visibility', 'visible');
+        showWishes();
+      });
+    }).catch(error => console.log('an error occured', error));
+  } else {
+    console.log('This is a birthday celebration code for a kid. Why ruin it for fun Please leave this code alone for a day and spoil it later.')
+  }
 }
 
 function showWishes() {
@@ -67,4 +71,15 @@ function makesnack(msg) {
   setTimeout(function() {
     snackbar.className = snackbar.className.replace('show', '');
   }, 3000);
+}
+
+function checkBadwords(words) {
+  words = words.toLowerCase();
+  let wordarray = words.split(' ');
+  let foundbadwords = wordarray.filter(el => badWords.includes(el));
+  if(foundbadwords.length > 0) {
+    return false
+  } else {
+    return true
+  }
 }
