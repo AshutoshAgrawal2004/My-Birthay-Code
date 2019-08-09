@@ -60,7 +60,7 @@ function showWishes() {
       let wishhtml = `
       <div class="onewish">${json.wish} <br> <p class="sender">-- ${json.sender}</p></div>
       `
-      wishcontainer.innerHTML += wishhtml;
+      wishcontainer.innerText += wishhtml;
     })
   }).then(() => makesnack("Thanks for all these Wishes")).catch(error => console.error(error))
 }
